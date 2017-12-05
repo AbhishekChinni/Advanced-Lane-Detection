@@ -12,5 +12,6 @@ The project is aimed at lane detection from a video taken from a front-camera of
 5) Calculating the Radius of curvature and vehicular position in the lane.
 6) Visualization
 
-Code: included in run.py
-Sample Output: https://www.youtube.com/watch?v=ORShZ8Ny0R0&feature=youtu.be
+#Code: included in run.py
+
+#Sample Output: https://www.youtube.com/watch?v=ORShZ8Ny0R0&feature=youtu.be
