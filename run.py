@@ -112,7 +112,7 @@ def fit_curve1(img):
 
     #Take only 1/4th to 3/4th of the image to find your lanes
     midpoint=np.int(hist.shape[0]/2)
-    left=np.argmax(hist[midpoint//2:midpoint])
+    left=np.argmax(hist[0:midpoint])
     right=np.argmax(hist[midpoint:midpoint+midpoint//2])+midpoint
     left_cur=left
     right_cur=right
@@ -279,7 +279,7 @@ if __name__ == '__main__':
     caliberate_camera('./camera_cal')
 
     #Read your video
-    process_video('solidWhiteRight.mp4', 'out.mp4')
+    process_video('project_video.mp4', 'out.mp4')
 
     #Test image
     #img = cv2.imread('left12.jpg')
