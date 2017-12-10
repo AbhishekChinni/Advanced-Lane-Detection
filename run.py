@@ -1,10 +1,17 @@
 import cv2
 import numpy as np
 import matplotlib.image as mpimg
+import matplotlib.pyplot as plt
 import glob
 from moviepy.editor import VideoFileClip as vfc
 
+import sys
 
+
+xscaler = 0 # will be initialized later
+svc = 0 # will be initialized later while loading from pickle file
+from vehicleDetection import *
+################################################
 objPoints=[]
 imgPoints=[]
 #9 corners in row and x corners in y directions
@@ -22,7 +29,6 @@ prev_ry=0
 
 #This function transforms an image into a bird's eye view of he same
 def perspective_transform(img):
-    
 #    cv2.imshow('FRAME', img)
 #    cv2.waitKey(0)
 #    cv2.destroyAllWindows() 
@@ -215,6 +221,15 @@ def calc_curvature(lcurvemetres,rcurvemetres):
 
 
 def process_image(img):
+    '''
+    plt.imshow(img, interpolation='nearest')
+    plt.show()
+    cimg,found=findcars(img)
+    if found:
+        plt.imshow(cimg, interpolation='nearest')
+        plt.show()
+        sys.exit(0)
+    '''
     #Get the height and width of the image
     h,  w = img.shape[:2]
 
@@ -241,7 +256,7 @@ def process_image(img):
     vehicle_position=get_vehicle_pos(undis_img,lfitpixels,rfitpixels)
 
     result_img=visualize(undis_img,final_img,lfitpixels,rfitpixels,MInverse,lcurvaturemetres,rcurvaturemetres,vehicle_position)
-    return result_img
+    return findcars(result_img)[0]
 
 
 
@@ -249,6 +264,7 @@ def process_image(img):
 
 #Given a video, process it and save output
 def process_video(inp,out):
+
     vid = vfc(inp)
     prscd_vid=vid.fl_image(process_image)
     prscd_vid.write_videofile(out, audio=False)
@@ -275,6 +291,8 @@ def caliberate_camera(path):
             img = cv2.drawChessboardCorners(img, (cbrows,cbcols), corners2,ret)
     ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objPoints, imgPoints, gray.shape[::-1],None,None)
 if __name__ == '__main__':
+    
+    
     #First caliberate your camera to get the coefficients to undistort
     caliberate_camera('./camera_cal')
 
